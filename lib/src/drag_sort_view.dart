@@ -229,7 +229,7 @@ class DragSortViewState extends State<DragSortView>
               child: Container(
                 width: _itemWidth + space * _zoomController.value * 2,
                 height: _itemWidth + space * _zoomController.value * 2,
-                color: Colors.redAccent,
+                color: Colors.transparent,
                 child: overlay,
               ),
             ));

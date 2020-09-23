@@ -55,7 +55,15 @@ class _DragSortPageState extends State<DragSortPage> {
             itemBuilder: (BuildContext context, int index) {
               ImageBean bean = imageList[index];
               // It is recommended to use a thumbnail picture
-              return Utils.getWidget(bean.thumbPath);
+              return ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Utils.getWidget(bean.thumbPath),
+                  ],
+                ),
+              );
             },
             initBuilder: (BuildContext context) {
               return InkWell(
