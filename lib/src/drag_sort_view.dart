@@ -54,6 +54,7 @@ class DragSortView extends StatefulWidget {
     Key key,
     this.width,
     this.space: 5,
+    this.totalCount: 9,
     this.padding: EdgeInsets.zero,
     this.margin: EdgeInsets.zero,
     @required this.itemBuilder,
@@ -75,6 +76,9 @@ class DragSortView extends StatefulWidget {
 
   /// View padding.
   final EdgeInsets padding;
+
+  /// View max count
+  final int totalCount;
 
   /// View margin.
   final EdgeInsets margin;
@@ -184,7 +188,7 @@ class DragSortViewState extends State<DragSortView>
     width = width - padding.left - padding.right;
     _itemWidth = (width - space * 2) / 3;
     _positions.clear();
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < widget.totalCount; i++) {
       double left = (space + _itemWidth) * (i % 3);
       double top = (space + _itemWidth) * (i ~/ 3);
       _positions.add(Rect.fromLTWH(left, top, _itemWidth, _itemWidth));
@@ -335,7 +339,7 @@ class DragSortViewState extends State<DragSortView>
   void _clearAll() {
     _removeOverlay();
     _cacheData.clear();
-    int count = math.min(9, widget.data.length);
+    int count = math.min(widget.totalCount, widget.data.length);
     for (int i = 0; i < count; i++) {
       widget.data[i].index = i;
       widget.data[i].selected = false;
@@ -391,7 +395,7 @@ class DragSortViewState extends State<DragSortView>
       }
     }
 
-    if (_itemCount < 9) {
+    if (_itemCount < widget.totalCount) {
       children.add(Positioned.fromRect(
         rect: _positions[_itemCount],
         child: widget.initBuilder(context),
@@ -404,7 +408,7 @@ class DragSortViewState extends State<DragSortView>
 
   @override
   Widget build(BuildContext context) {
-    _itemCount = math.min(9, widget.data.length);
+    _itemCount = math.min(widget.totalCount, widget.data.length);
     EdgeInsets padding = widget.padding;
     EdgeInsets margin = widget.margin;
     if (_itemWidth == 0) {
@@ -412,7 +416,7 @@ class DragSortViewState extends State<DragSortView>
     }
 
     int column = (_itemCount > 3 ? 3 : _itemCount + 1);
-    int row = ((_itemCount + (_itemCount < 9 ? 1 : 0)) / 3).ceil();
+    int row = ((_itemCount + (_itemCount < widget.totalCount ? 1 : 0)) / 3).ceil();
     double realWidth = _itemWidth * column +
         widget.space * (column - 1) +
         padding.left +
